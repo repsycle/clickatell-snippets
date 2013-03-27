@@ -1,4 +1,16 @@
 <?php
+// Pre-requisites !!!!!
+// *** Clickatell MO / 2 Way / Short Code / Longcode
+// PHP ... and file_get_contents. Hack curl if you need to...
+// Clickatell HTTP/S api
+// Credits!
+
+// This file needs to be the callback  URL for MO / 2 Way / Short Code / Longcode
+// Set callback to GET or POST and add auth. use protection... always
+
+//Problems? Send an email to repsycle@gmail.com
+
+//I Wrote this little script for :: ZA CAPE TOWN RESISTANCE INGRESS - first LVL 8 in AFRICA
 
 //check for required GET/POST/REQUEST
 if(!empty($_REQUEST['from']) && !empty($_REQUEST['text']) && !empty($_REQUEST['api_id']))
@@ -68,9 +80,6 @@ class GroupMsg
 			//build new group to send to
             $to = implode(',',$group);;
 
-            //replace spaces with + in msg
-            $msg = str_replace(' ','+',$text);
-
 			//remove keyword and + from msg
             $msg = substr($msg,strlen($this->keyword)+1);
 			
@@ -79,6 +88,9 @@ class GroupMsg
 			
 			//Add group name to front of msg
 			$msg  = $this->group_name.' : '.$msg;
+            
+            //replace spaces with + in msg
+            $msg = str_replace(' ','+',$text);
 
 			//build url string
             $url  = "$this->api_host/http/sendmsg?";
