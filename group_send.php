@@ -49,13 +49,13 @@ class GroupMsg
 	//The clickatell url
     var $api_host = 'http://api.clickatell.com'; //use https if paranoid
 	
-	//set your clickatell details below
-	var $api_username  = 'username'; //modify username
-	var $api_password  = 'password'; //modify password
+    //set your clickatell details below
+    var $api_username  = 'username'; //modify username
+    var $api_password  = 'password'; //modify password
     var $api_id   	   = '1234567';  //modify api_id
-	var $keyword       = 'KEYWORD';  //modify keyword
-	var $shortcode     = '12345';    //modify MO number(incoming number and sender_id)
-	var $group_name	   = 'My Group'; //
+    var $keyword       = 'KEYWORD';  //modify keyword
+    var $shortcode     = '12345';    //modify MO number(incoming number and sender_id)
+    var $group_name	   = 'My Group'; //modify group name
 
     function SendSMS($source_mobile,$text)
 	{
