@@ -15,30 +15,30 @@
 //check for required GET/POST/REQUEST
 if(!empty($_REQUEST['from']) && !empty($_REQUEST['text']) && !empty($_REQUEST['api_id']))
 {
-	//fire up the class
-	$groupmsg = new GroupMsg();
-		
-	//Extra security only allow from certain api_id
-	//(you can also check if the callback is coming from the correct server/ip)
+    //fire up the class
+    $groupmsg = new GroupMsg();
+
+    //Extra security only allow from certain api_id
+    //(you can also check if the callback is coming from the correct server/ip)
     if($api_id == $this->http_api_id)
     {
-		//Grab the vars from REQUEST
-		$api_id        = $_REQUEST['api_id'];
-		$source_mobile = $_REQUEST['from'];
-		$text          = $_REQUEST['text'];
-		
-		// to avoid case issues, make it all lowercase
-		$lower_text = strtolower($text);
-		
-		//break up the words using spaces
-		$check_keyword = explode(' ',$lower_text);
-		
-		//Do we have the correct first keyword?
-		if($check_keyword[0] == strtolower($this->keyword))
-		{
-			//Send the message
-			$groupmsg->SendSMS($source_mobile,$text);
-		}
+        //Grab the vars from REQUEST
+        $api_id        = $_REQUEST['api_id'];
+        $source_mobile = $_REQUEST['from'];
+        $text          = $_REQUEST['text'];
+
+        // to avoid case issues, make it all lowercase
+        $lower_text = strtolower($text);
+
+        //break up the words using spaces
+        $check_keyword = explode(' ',$lower_text);
+
+        //Do we have the correct first keyword?
+        if($check_keyword[0] == strtolower($this->keyword))
+        {
+            //Send the message
+            $groupmsg->SendSMS($source_mobile,$text);
+        }
     }
 }
 
@@ -46,9 +46,9 @@ exit(9);
 
 class GroupMsg
 {
-	//The clickatell url
+    //The clickatell url
     var $api_host = 'http://api.clickatell.com'; //use https if paranoid
-	
+
     //set your clickatell details below
     var $api_username  = 'username'; //modify username
     var $api_password  = 'password'; //modify password
@@ -58,48 +58,48 @@ class GroupMsg
     var $group_name	   = 'My Group'; //modify group name
 
     function SendSMS($source_mobile,$text)
-	{
-		//The group that can send and receive sms
+    {
+        //The group that can send and receive sms
         //$group['Joe Soap']   = '111111111111';
         //$group['Fred Smith'] = '222222222222';
         //$group['Jane Doe']   = '333333333333';
-		
-		//Is this source mobile in the group?
+
+        //Is this source mobile in the group?
         if(in_array($source_mobile,$group))
         {
-			//search the array for the mobile
+            //search the array for the mobile
             if(($key = array_search($source_mobile, $group)) !== false)
             {
-				//grap the sender
-				$source_name=$key;
-				
-				//Remove mobile from group				
+                //grap the sender
+                $source_name=$key;
+
+                //Remove mobile from group
                 unset($group[$key]);
             }
 
-			//build new group to send to
+            //build new group to send to
             $to = implode(',',$group);;
 
-			//remove keyword and + from msg
+            //remove keyword and + from msg
             $msg = substr($msg,strlen($this->keyword)+1);
-			
-			//add the sender to end of msg
-			$msg .= ' - from : '.$source_name;
-			
-			//Add group name to front of msg
-			$msg  = $this->group_name.' : '.$msg;
-            
+
+            //add the sender to end of msg
+            $msg .= ' - from : '.$source_name;
+
+            //Add group name to front of msg
+            $msg  = $this->group_name.' : '.$msg;
+
             //replace spaces with + in msg
             $msg = str_replace(' ','+',$text);
 
-			//build url string
+            //build url string
             $url  = "$this->api_host/http/sendmsg?";
             $url .= "api_id=$this->http_api_id&user=$this->api_username&password=$this->api_password";
             $url .= "&to=$to&text=$msg&from=$this->shortcode&mo=1";
 
             //do the send
-		    file_get_contents($url);
+            file_get_contents($url);
         }
-	}
+    }
 }
 ?>
