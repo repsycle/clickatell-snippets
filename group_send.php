@@ -83,11 +83,9 @@ class GroupMsg
             //remove keyword and + from msg
             $msg = substr($msg,strlen($this->keyword)+1);
 
-            //add the sender to end of msg
-            $msg .= ' - from : '.$source_name;
 
-            //Add group name to front of msg
-            $msg  = $this->group_name.' : '.$msg;
+            //Add group name and sender to front of msg
+            $msg  = $this->group_name.' from  '.$source_name.' - '.$msg;
 
             //replace spaces with + in msg
             $msg = str_replace(' ','+',$text);
