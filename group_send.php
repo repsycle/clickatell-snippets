@@ -20,7 +20,7 @@ if(!empty($_REQUEST['from']) && !empty($_REQUEST['text']) && !empty($_REQUEST['a
 
     //Extra security only allow from certain api_id
     //(you can also check if the callback is coming from the correct server/ip)
-    if($api_id == $this->http_api_id)
+    if($_REQUEST['api_id'] == $groupmsg->api_id)
     {
         //Grab the vars from REQUEST
         $api_id        = $_REQUEST['api_id'];
@@ -34,7 +34,7 @@ if(!empty($_REQUEST['from']) && !empty($_REQUEST['text']) && !empty($_REQUEST['a
         $check_keyword = explode(' ',$lower_text);
 
         //Do we have the correct first keyword?
-        if($check_keyword[0] == strtolower($this->keyword))
+        if($check_keyword[0] == strtolower($groupmsg->keyword))
         {
             //Send the message
             $groupmsg->SendSMS($source_mobile,$text);
@@ -81,18 +81,17 @@ class GroupMsg
             $to = implode(',',$group);;
 
             //remove keyword and + from msg
-            $msg = substr($msg,strlen($this->keyword)+1);
-
+            $msg = substr($text,strlen($this->keyword)+1);
 
             //Add group name and sender to front of msg
-            $msg  = $this->group_name.' from  '.$source_name.' - '.$msg;
+            $msg = $this->group_name.' from '.$source_name.' - '.$msg;
 
             //replace spaces with + in msg
-            $msg = str_replace(' ','+',$text);
+            $msg = str_replace(' ','+',$msg);
 
             //build url string
             $url  = "$this->api_host/http/sendmsg?";
-            $url .= "api_id=$this->http_api_id&user=$this->api_username&password=$this->api_password";
+            $url .= "api_id=$this->api_id&user=$this->api_username&password=$this->api_password";
             $url .= "&to=$to&text=$msg&from=$this->shortcode&mo=1";
 
             //do the send
