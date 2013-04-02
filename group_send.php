@@ -86,16 +86,18 @@ class GroupMsg
             //Add group name and sender to front of msg
             $msg = $this->group_name.' from '.$source_name.' - '.$msg;
 
-            //replace spaces with + in msg
-            $msg = str_replace(' ','+',$msg);
+            //urlencode the message
+            $msg=urlencode($msg);
 
             //build url string
             $url  = "$this->api_host/http/sendmsg?";
             $url .= "api_id=$this->api_id&user=$this->api_username&password=$this->api_password";
-            $url .= "&to=$to&text=$msg&from=$this->shortcode&mo=1";
+            $url .= "&to=$to&text=$msg&from=$this->shortcode&mo=1&concat=4";//add concat if required
 
             //do the send
-            file_get_contents($url);
+            $result=file_get_contents($url);
+            
+            //TODO : check for success and notify 
         }
     }
 }
